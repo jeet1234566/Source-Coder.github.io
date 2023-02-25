@@ -298,6 +298,163 @@ if __name__=="__main__":
         <p class="engine">While the above script looks quite lengthy, it is very simple and easy to understand.</p>
         <p class="engine">If you look closely, all we have done is imported the required modules and the online and offline functions. Then within the main method, the first thing we do is greet the user using the <span class="grey">greet_user()</span> function.</p>
         <p class="engine">Next, we run a while loop to continuously take input from the user using the <span class="grey">take_user_input()</span> function. Since we have our query string here, we can add if-else ladder to check for the different conditions on the <span class="grey">query</span> string.</p>
+        
+        <p class="siddu">All Coding</p>
+        <pre class=" language-python"><code class=" language-python">
+            import pyttsx3
+            import datetime
+            import pywhatkit as kit
+            import speech_recognition as sr
+            import pyaudio
+            import wikipedia
+            import webbrowser  
+            import requests
+            import os
+            import smtplib
+            
+            # Set Voice (Female)
+            engine = pyttsx3.init('sapi5')
+            voices = engine.getProperty('voices')
+            print(voices[1].id)
+            engine.setProperty('voice', voices[1].id)
+            
+            def speak(audio):
+                engine.say(audio)
+                engine.runAndWait()
+            
+            def wishme():
+                hour = int(datetime.datetime.now().hour)
+                if hour &gt; 6 and hour &lt; 12:
+                    speak("Good Morning")
+                elif hour &gt; 12 and hour &gt; 18:
+                    speak(f"Good afternoon")
+                else:
+                    speak("Good evening")
+            
+                speak("I am jarvis. Please tell me how may I help you")
+            
+            def search_on_google(query):
+                kit.search(query)
+            
+            def send_whatsapp_message(number, message):
+                kit.sendwhatmsg_instantly(f"+91{number}", message)
+            
+            def get_weather_report(city):
+                res = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric").json()
+                weather = res["weather"][0]["main"]
+                temperature = res["main"]["temp"]
+                feels_like = res["main"]["feels_like"]
+                return weather, f"{temperature}℃", f"{feels_like}℃"
+            
+            def takeCommand():
+            
+                r = sr.Recognizer()
+                with sr.Microphone() as source:
+                    print('Listening....')
+                    r.pause_threshold = 1
+                    audio = r.listen(source)
+            
+                try:
+                    print('Recognizing...')
+                    query = r.recognize_google(audio, language='en-in')
+                    print(f"User said: {query}\n")
+                    
+                except Exception as e:
+                    speak('Say that Again Please')
+                    return "None"
+                return query
+            
+            def find_my_ip():
+                ip_address = requests.get('https://api64.ipify.org?format=json').json()
+                return ip_address["ip"]
+            
+            def sendEmail(to, content):
+                server= smtplib.SMTP('smtp.gmail.com', 587)
+                server.ehlo()
+                server.starttls()
+                server.login('vishwajeetpal2008@gmail.com', 'Vishwajeet@2008')
+                server.sendmail('vishwajeetpal2008@gmail.com', to ,content)
+                server.close()
+            if __name__=="__main__":
+                wishme()
+            
+                if True:
+                    query = takeCommand().lower()
+            
+                    if 'wikipedia' in query:
+                        speak("searching wikipedia...")
+                        query = query.replace("wikipedia", "")
+                        results = wikipedia.summary(query, sentences=2)
+                        print(results)
+                        speak(results)
+            
+                    elif "open youtube" in query:
+                        webbrowser.open("youtube.com")
+            
+                    elif "open google" in query:
+                        webbrowser.open("google.com")
+            
+                    elif "open amazon" in query:
+                        webbrowser.open("amazon.com")
+            
+                    elif "open instagram" in query:
+                        webbrowser.open("instagram.com")
+            
+                    elif "open facebook" in query:
+                        webbrowser.open("facebook.com")
+            
+                    elif "play music" in query:
+                        music_dir = 'C:\\Users\\VISHWAJEET\\OneDrive\\Desktop\\Audio\\Anu web\\song'
+                        songs = os.listdir(music_dir)
+                        print(songs)
+                        os.startfile(os.path.join(music_dir, songs[0]))
+            
+                    elif "the time" in query:
+                        strtime = datetime.datetime.now().strftime("%H:%M:%S")
+                        speak(f"Sir, The Time is {strtime}")
+            
+                    elif "open Microsoft age" in query:
+                        codePath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+                        os.startfile(codePath)
+                  
+                    elif 'search on google' in query:
+                        speak('What do you want to search on Google, sir?')
+                        query = takeCommand().lower()
+                        search_on_google(query)
+            
+                    
+                    elif "send whatsapp message" in query:
+                        speak('On what number should I send the message sir? Please enter in the console: ')
+                        number = input("Enter the number: ")
+                        speak("What is the message sir?")
+                        message = takeCommand().lower()
+                        send_whatsapp_message(number, message)
+                        speak("I've sent the message sir.")
+            
+                    elif 'weather' in query:
+                        ip_address = find_my_ip()
+                        city = requests.get(f"https://ipapi.co/{ip_address}/city/").text
+                        speak(f"Getting weather report for your city {city}")
+                        weather, temperature, feels_like = get_weather_report(city)
+                        speak(f"The current temperature is {temperature}, but it feels like {feels_like}")
+                        speak(f"Also, the weather report talks about {weather}")
+                        speak("For your convenience, I am printing it on the screen sir.")
+                        print(f"Description: {weather}\nTemperature: {temperature}\nFeels like: {feels_like}")
+            
+                    elif 'email to jeet' in query:
+                        try:
+                            speak("What should I say?")
+                            content = takeCommand()
+                            to = "vishwajeetpal2008@gmail.com"
+                            sendEmail(to, content)
+                            speak("Email has been sent!")
+            
+                        except Exception as ex:
+                            print(ex)
+                            speak("Sorry my freind Vishwajeet Coder, I am not to able send this email")
+                        
+            
+                    </code></pre>
     </div>
 </body>
 </html>
