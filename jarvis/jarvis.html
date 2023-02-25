@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="jarvis.css">
+    <title>Jarvis AI</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="sid">Jeet Coder Source Code</h1>
+        <h6>Codes are being provided for free by Vishwajeet Coder</h6>
+    </div>
+    <div class="detail">
+        <h1 class="jeet">J.V.A.R.I.S</h1>
+        <p class="wiki">J.A.R.V.I.S. (Just A Rather Very Intelligent System) is a fictional character voiced by Paul Bettany in the Marvel Cinematic Universe (MCU) film franchise, based on the Marvel Comics characters Edwin Jarvis and H.O.M.E.R., respectively the household butler of the Stark family and another AI designed by Stark. J.A.R.V.I.S. is an artificial intelligence created by Tony Stark, who later controls his Iron Man and Hulkbuster armor for him. In Avengers: Age of Ultron, after being partially destroyed by Ultron, J.A.R.V.I.S. is given physical form as Vision, physically portrayed by Bettany. Different versions of the character also appear in comics published by Marvel Comics, depicted as AI designed by Iron Man and Nadia van Dyne.</p>
+    
+        <h1 class="set">Project Setup</h1>
+
+        <p class="pytt">1. pyttsx3: pyttsx is a cross-platform text to speech library which is platform-independent. The major advantage of using this library for text-to-speech conversion is that it works offline. To install this module, type the below command in the terminal:</p>
+        <pre class=" language-bash"><code class=" language-bash">$ pip <span class="tokenfunction">install</span> pyttsx3</code></pre>
+
+        <p class="pytt">2. SpeechRecognition: This allows us to convert audio into text for further processing. To install this module, type the below command in the terminal:</p>
+        <pre class=" language-bash"><code class=" language-bash">$ pip <span class="tokenfunction">install</span> SpeechRecognition</code></pre>
+
+        <p class="pytt">3. wikipedia: We'll use this to fetch a variety of information from the Wikipedia website. To install this module, type the below command in the terminal:</p>
+        <pre class=" language-bash"><code class=" language-bash">$ pip <span class="tokenfunction">install</span> wikipedia</code></pre>
+
+        <p class="pytt">4. requests: This is an elegant and simple HTTP library for Python that allows you to send HTTP/1.1 requests extremely easily. To install the module, run the following command in the terminal:</p>
+        <pre class=" language-bash"><code class=" language-bash">$ pip <span class="tokenfunction">install</span> requests</code></pre>
+
+        <p class="siddu">Import Libraries</p>
+        <pre class=" language-python"><code class=" language-python">
+import pyttsx3
+import datetime
+import pywhatkit as kit
+import speech_recognition as sr
+import pyaudio
+import wikipedia
+import webbrowser  
+import requests
+import os
+import smtplib</code></pre>
+
+        <p class="siddu">How to Set Up JARVIS with Python</p>
+        <p class="engine">Before we start defining a few important functions, let's create a speech engine first.</p>
+        <pre class=" language-python"><code class=" language-python">
+import pyttsx3
+
+# Set Rate
+engine.setProperty('rate', 190)
+
+# Set Volume
+engine.setProperty('volume', 1.0)
+
+# Set Female Voice
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+print(voices[1].id)
+engine.setProperty('voice', voices[1].id)
+
+# Set Male Voice
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+print(voices[0].id)
+engine.setProperty('voice', voices[1].id)</code></pre>
+        
+        <p class="engine">Let's analyze the above script. First of all, we have initialized an <span class="grey">engine</span> using the <span class="grey">pyttsx3</span> module. <span class="grey">sapi5</span> is a Microsoft Speech API that helps us use the voices. Learn more about it here.</p>
+        <p class="engine">Next, we are setting the <span class="grey">rate</span> and <span class="grey">volume</span> properties of the speech engine engine using <span class="grey">setProperty</span> method.</p>
+
+        <p class="siddu">Enable the Speak Function</p>
+        <p class="engine">The speak function will be responsible for speaking whatever text is passed to it. Let's see the code:</p>
+        <pre class=" language-python"><code class=" language-python">
+def speak(audio):
+engine.say(audio)
+engine.runAndWait()</code></pre>
+        <p class="engine">In the <span class="grey">speak()</span> method, the engine speaks whatever text is passed to it using the <span class="gery">say()</span> method. Using the <span class="grey">runAndWait()</span> method, it blocks during the event loop and returns when the commands queue is cleared.</p>
+
+        <p class="siddu">Enable the Greet Function</p>
+        <p class="engine">This function will be used to greet the user whenever the program is run. According to the current time, it greets Good Morning, Good Afternoon, or Good Evening to the user.</p>
+        <pre class=" language-python"><code class=" language-python">
+from datetime import datetime
+
+def greet_user():
+
+    hour = datetime.now().hour
+    if (hour &gt; 6) and (hour &lt; 12):
+        speak(f"Good Morning")
+    elif (hour &gt; 12) and (hour &lt; 18):
+        speak(f"Good afternoon")
+    else:
+        speak(f"Good Evening")
+
+    speak("I am jarvis. Please tell me how may I help you")</code></pre>
+        
+        <p class="siddu">How to Take User Input</p>
+        <p class="engine">We use this function to take the commands from the user and recognize the command using the speech_recognition module.</p>
+        <pre class=" language-python"><code class=" language-python">
+def takeCommand():
+
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print('Listening....')
+        r.pause_threshold = 1
+        audio = r.listen(source)
+
+    try:
+        print('Recognizing...')
+        query = r.recognize_google(audio, language='en-in')
+        print(f"User said: {query}\n")
+        
+    except Exception as e:
+        speak('Say that Again Please')
+        return "None"
+    return query</code></pre>
+        <p class="engine">We have imported <span class="grey">speech_recognition</span> module as <span class="grey">sr</span> sr. The Recognizer class within the <span class="grey">speech_recognition</span> helps us recognize the audio. The same module has a Microphone class that gives us access to the microphone of the device. So with the microphone as the <span class="grey">source</span> , we try to listen to the audio using the <span class="grey">listen()</span> method in the Recognizer class.</p>
+        <p class="engine">We have also set the <span class="grey">pause_threshold</span> to 1, that is it will not complain even if we pause for one second during we speak.</p>
+        <p class="engine">Next, using the <span class="grey">recognize_google()</span> method from the Recognizer class, we try to recognize the audio. The <span class="grey">recognize_google()</span> method performs speech recognition on the audio passed to it, using the Google Speech Recognition API.</p>
+        <p class="engine">We have set the language to en-in, which is English India. It returns the transcript of the audio which is nothing but a string. We've stored it in a variable called query.</p>
+
+        <p class="siddu">How to Add the Search on Google Function</p>
+        <p class="engine">Again we'll be using PyWhatKit for searching on Google.</p>
+        <pre class=" language-python"><code class=" language-python">
+# Search on Google
+def search_on_google(query):
+    kit.search(query)</code></pre>
+    
+        <p class="siddu">How to Add the Send WhatsApp Message Function</p>
+        <p class="engine">We'll be using PyWhatKit once again for sending WhatsApp messages.</p>
+        <pre class=" language-python"><code class=" language-python">
+def send_whatsapp_message(number, message):
+    kit.sendwhatmsg_instantly(f"+91{number}", message)</code></pre>
+        <p class="engine">Our method accepts two arguments the phone <span class="grey">number</span> number and the <span class="grey">message</span> message. It then calls the <span class="grey">send_whatsapp_message()</span> method to send a WhatsApp message. Make sure you've already logged in into your WhatsApp account on WhatsApp for Web.</p>
+
+        <p class="siddu">How to Add the Find my IP Address Function</p>
+        <p class="engine">ipify provides a simple public IP address API. We just need to make a GET request on this URL: <a target="_blank" href="https://api64.ipify.org/?format=json">https://api64.ipify.org/?format=json</a>. It returns JSON data as:</p>
+        <pre class=" language-python"><code class=" language-python">
+{
+    "ip": "117.214.111.199"
+}</code></pre>
+        <p class="engine">We can then simply return the ip from the JSON data. So, let's create this method:</p>
+        <pre class=" language-python"><code class=" language-python">
+def find_my_ip():
+    ip_address = requests.get('https://api64.ipify.org?format=json').json()
+    return ip_address["ip"]
+        </code></pre>
+
+        <p class="siddu">How to Add the Get Weather Report Function</p>
+        <p class="engine">To get the weather report, we're using the <a target="_blank" href="https://openweathermap.org/">OpenWeatherMap API</a> . Signup for a free account and get the APP ID.</p>
+        <pre class=" language-python"><code class=" language-python">
+def get_weather_report(city):
+res = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q={citunits=metric").json()
+weather = res["weather"][0]["main"]
+temperature = res["main"]["temp"]
+feels_like = res["main"]["feels_like"]
+return weather, f"{temperature}℃", f"{feels_like}℃"
+        </code></pre>
+        <p class="engine">As per the OpenWeatherMap API, we need to make a GET request on the above-mentioned URL with the city name. We'll get a JSON response as:</p>
+        <pre class=" language-python"><code class=" language-python">
+{
+    "coord": {
+        "lon": 85,
+        "lat": 24.7833
+    },
+    "weather": [
+        {
+            "id": 721,
+            "main": "Haze",
+            "description": "haze",
+            "icon": "50d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 26.95,
+        "feels_like": 26.64,
+        "temp_min": 26.95,
+        "temp_max": 26.95,
+        "pressure": 1011,
+        "humidity": 36
+    },
+    "visibility": 3000,
+    "wind": {
+        "speed": 2.57,
+        "deg": 310
+    },
+    "clouds": {
+        "all": 57
+    },
+    "dt": 1637227634,
+    "sys": {
+        "type": 1,
+        "id": 9115,
+        "country": "IN",
+        "sunrise": 1637195904,
+        "sunset": 1637235130
+    },
+    "timezone": 19800,
+    "id": 1271439,
+    "name": "Gaya",
+    "cod": 200
+}</code></pre>
+        
+        <p class="siddu">How to Create the Main Method</p>
+        <p class="engine">To run the project, we'll need to create a main method. Create a <span class="grey">main.py</span> file and add the following code:</p>
+        <pre class=" language-python"><code class=" language-python">
+if __name__=="__main__":
+    wishme()
+        
+    if True:
+
+        query = takeCommand().lower()  
+
+        if 'wikipedia' in query:
+            speak("searching wikipedia...")
+            query = query.replace("wikipedia", "")
+            results = wikipedia.summary(query, sentences=2)
+            print(results)
+            speak(results)  
+
+        # Open YouTube Web Browser
+        elif "open youtube" in query:
+            webbrowser.open("youtube.com")
+        
+        # Open Google Web Browser
+        elif "open google" in query:
+            webbrowser.open("google.com")
+        
+        # Open Amazon Web Browser
+        elif "open amazon" in query:
+            webbrowser.open("amazon.com")
+
+        # Open Instagram Web Browser
+        elif "open instagram" in query:
+            webbrowser.open("instagram.com")
+
+        # Open Facebook Web Browser
+        elif "open facebook" in query:
+            webbrowser.open("facebook.com")
+
+        # Play Music
+        elif "play music" in query:
+            music_dir = 'C:\\Users\\VISHWAJEET\\OneDrive\\Desktop\\Audio\\Anu web\\song'
+            songs = os.listdir(music_dir)
+            print(songs)
+            os.startfile(os.path.join(music_dir, songs[0]))
+        
+        # What is the Time
+        elif "the time" in query:
+            strtime = datetime.datetime.now().strftime("%H:%M:%S")
+            speak(f"Sir, The Time is {strtime}")    
+
+        elif "open Microsoft age" in query:
+            codePath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+            os.startfile(codePath)
+        
+        # Search ON Google
+        elif 'search on google' in query:
+            speak('What do you want to search on Google, sir?')
+            query = takeCommand().lower()
+            search_on_google(query) 
+            
+        # Send WhatsApp Message
+        elif "send whatsapp message" in query:
+            speak('On what number should I send the message sir? Please enter in t  console: ')
+            number = input("Enter the number: ")
+            speak("What is the message sir?")
+            message = takeCommand().lower()
+            send_whatsapp_message(number, message)
+            speak("I've sent the message sir.") 
+
+        # Today Weather
+        elif 'weather' in query:
+            ip_address = find_my_ip()
+            city = requests.get(f"https://ipapi.co/{ip_address}/city/").text
+            speak(f"Getting weather report for your city {city}")
+            weather, temperature, feels_like = get_weather_report(city)
+            speak(f"The current temperature is {temperature}, but it feels li   {feels_like}")
+            speak(f"Also, the weather report talks about {weather}")
+            speak("For your convenience, I am printing it on the screen sir.")
+            print(f"Description: {weather}\nTemperature: {temperature}\nFeels lik   {feels_like}") 
+
+        # Send Email
+        elif 'email to jeet' in query:
+            try:
+                speak("What should I say?")
+                content = takeCommand()
+                to = "vishwajeetpal2008@gmail.com"
+                sendEmail(to, content)
+                speak("Email has been sent!")   
+            except Exception as ex:
+                print(ex)
+                speak("Sorry my freind Vishwajeet Coder, I am not to able send this email")
+            
+        </code></pre>
+
+        <p class="engine">While the above script looks quite lengthy, it is very simple and easy to understand.</p>
+        <p class="engine">If you look closely, all we have done is imported the required modules and the online and offline functions. Then within the main method, the first thing we do is greet the user using the <span class="grey">greet_user()</span> function.</p>
+        <p class="engine">Next, we run a while loop to continuously take input from the user using the <span class="grey">take_user_input()</span> function. Since we have our query string here, we can add if-else ladder to check for the different conditions on the <span class="grey">query</span> string.</p>
+    </div>
+</body>
+</html>
