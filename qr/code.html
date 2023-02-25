@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="code.css">
+    <title>QR Generator BY Own</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="sid">Jeet Coder Source Code</h1>
+        <h6>Codes are being provided for free by Vishwajeet Coder</h6>
+    </div>
+    <div class="gene">
+        <p class="siddu">What is QR Code?</p>
+        <p class="engine">QR codes are used to encode and decode the data into a machine-readable form. The use of camera phones to read two-dimensional barcodes for various purposes is currently a popular topic in both types of research and practical applications. </p>
+
+        <p class="pytt">1. pyqrcode</p>
+        <pre class=" language-bash"><code class=" language-bash">$ pip <span class="tokenfunction">install</span> pyttsx3</code></pre>
+        <p class="siddu">QR Codes with Python: Tutorial</p>
+        <p class="engine">In this section, I will take you through a tutorial on how to generate QR codes with Python. To generate QR Codes with Python you need to install only one Python library for this task:</p>
+        <p class="engine">Now let's see how to create a QR Code with Python programming language:</p>
+        <pre class=" language-bash"><code class=" language-bash">
+import pyqrcode
+from pyqrcode import QRCode 
+              
+    # String which represent the QR code 
+    s = "https://www.youtube.com/channel/UCUkn0honBrVZygnZc1l6EPQ"
+      
+    # Generate QR code 
+    url = pyqrcode.create(s) 
+      
+    # Create and save the png file naming "myqr.png" 
+    url.svg("myyoutube.svg", scale = 8) </code></pre>
+    <img src="myyoutube.svg" alt="">
+    <a href="https://www.youtube.com/channel/UCUkn0honBrVZygnZc1l6EPQ">YouTube</a>
+    </div>
+</body>
+</html>
