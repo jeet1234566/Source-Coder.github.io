@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="you.css">
+    <title>YouTube Downloader</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="sid">Jeet Coder Source Code</h1>
+        <h6>Codes are being provided for free by Vishwajeet Coder</h6>
+    </div>
+    <div class="yout">
+        <h1>YouTube</h1>
+        <p class="engine">YouTube is a global online video sharing and social media platform headquartered in San Bruno, California. It was launched on February 14, 2005, by Steve Chen, Chad Hurley, and Jawed Karim. It is owned by Google, and is the second most visited website, after Google Search</p>
+        <img src="javid.jpg" alt="">
+
+        <p class="siddu">Import Module</p>
+        <pre class=" language-python"><code class=" language-python">
+import pytube as YouTube</code></pre>
+
+        <p class="siddu">How to set Up YouTube Downloader With Python</p>
+        <p class="engine">Before we start defining a few important functions, let's create a YouTube Downloader.</p>
+        <pre class=" language-python"><code class=" language-python">
+from pytube import YouTu
+url = 'Enter your YouTube video url'
+
+path1= 'Enter your video folder path'
+path2= 'Enter your audio folder path'
+my_video = YouTube(url)
+print("Enter the choice\n1. download audio+video\n2. download only audio\n3. downloonly video")
+
+inp = int(input())
+if inp ==1:
+    print("\nfor higher resolution press 1 else press 2")
+    inp1 = int(input())
+    if inp1==1:
+        d = my_video.streams.get_highest_resolution()
+        d.download(path1)
+    else:
+        d = my_video.streams.get_lowest_resolution()
+        d.download(path1)
+elif inp == 2:
+    d = my_video.streams.filter(only_audio=True).all()
+    d[1].download(path2)
+elif inp == 3:
+    d = my_video.streams.get_highest_resolution()
+    d.download(path1)</code></pre>
+
+    </div>
+</body>
+</html>
